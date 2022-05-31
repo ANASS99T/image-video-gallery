@@ -20,7 +20,7 @@ const Playlist = ({playlist, setPlaylist}) => {
         {
             name: 'actions',
             width: '20%',
-            cell: row => (<TableActions row={row}/>)
+            cell: row => (<TableActions row={row} list={playlist} setPlaylist={setPlaylist}/>)
         },
     ];
 
@@ -32,7 +32,7 @@ const Playlist = ({playlist, setPlaylist}) => {
 
     return (
         <Container>
-            <Box sx={{my: 3 , boxShadow: 3, borderRadius:3}}>
+            <Box sx={{my: 3, boxShadow: 3, borderRadius: 3}}>
                 <DataTable
                     title="Playlist"
                     columns={columns}

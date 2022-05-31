@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, {useState, useEffect} from 'react';
 import Box from "@mui/material/Box";
 import IconButton from "@mui/material/IconButton";
 import DeleteIcon from '@mui/icons-material/Delete';
@@ -6,8 +6,9 @@ import EditIcon from '@mui/icons-material/Edit';
 import Modal from "@mui/material/Modal";
 import EditPlaylist from "./playlist/edit";
 import DeletePlaylist from "./playlist/delete";
+import playlist from "../pages/Playlist";
 
-const TableActions = (row) => {
+const TableActions = ({row, list, setPlaylist}) => {
 
     useEffect(() => {
         console.log(row);
@@ -27,8 +28,8 @@ const TableActions = (row) => {
         p: 2,
     };
 
-    const [openDelete, setOpenDelete] = React.useState(false);
-    const [openEdit, setOpenEdit] = React.useState(false);
+    const [openDelete, setOpenDelete] = useState(false);
+    const [openEdit, setOpenEdit] = useState(false);
 
     const handleOpenEdit = () => setOpenEdit(true);
     const handleCloseEdit = () => setOpenEdit(false);
@@ -63,8 +64,8 @@ const TableActions = (row) => {
                 aria-labelledby="modal-modal-title"
                 aria-describedby="modal-modal-description"
             >
-                <Box sx={{...Modalstyle, width:"25%"}}>
-                    <DeletePlaylist row={row} handleClose={handleCloseDelete}/>
+                <Box sx={{...Modalstyle, width: {xs: "100%", sm: "50%", md: '25%'}}}>
+                    <DeletePlaylist row={row} handleClose={handleCloseDelete} list={list} setPlaylist={setPlaylist}/>
                 </Box>
             </Modal>
         </>
