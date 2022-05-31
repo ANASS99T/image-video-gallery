@@ -32,10 +32,21 @@ const TableActions = ({row, list, setPlaylist}) => {
     const [openEdit, setOpenEdit] = useState(false);
 
     const handleOpenEdit = () => setOpenEdit(true);
-    const handleCloseEdit = () => setOpenEdit(false);
+    const handleCloseEdit = (event, reason) => {
+        if (reason && reason == "backdropClick")
+            return;
+        setOpenEdit(false)
+    };
 
-    const handleOpenDelete = () => setOpenDelete(true);
-    const handleCloseDelete = () => setOpenDelete(false);
+    const handleOpenDelete = () => {
+
+        setOpenDelete(true)
+    };
+    const handleCloseDelete = (event, reason) => {
+        if (reason && reason == "backdropClick")
+            return;
+        setOpenDelete(false)
+    };
 
     return (
         <>
