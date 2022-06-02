@@ -7,6 +7,7 @@ import Modal from "@mui/material/Modal";
 import EditPlaylist from "./playlist/edit";
 import DeletePlaylist from "./playlist/delete";
 import playlist from "../pages/Playlist";
+import {Link} from "react-router-dom";
 
 const TableActions = ({row, list, setPlaylist}) => {
 
@@ -51,7 +52,7 @@ const TableActions = ({row, list, setPlaylist}) => {
     return (
         <>
             <Box sx={{display: 'flex', alignItems: 'center', justifyContent: 'space-evenly', width: "100%"}}>
-                <IconButton aria-label="edit" color="secondary" size="medium" onClick={handleOpenEdit}>
+                <IconButton aria-label="edit" color="secondary" size="medium" component={Link} to={`/playlist/${row.id}`}>
                     <EditIcon fontSize="inherit"/>
                 </IconButton>
                 <IconButton aria-label="delete" color="error" size="medium" onClick={handleOpenDelete}>

@@ -21,7 +21,7 @@ function Navabr() {
     const pages = [
         {page: 'Photos', link: '/'},
         {page: 'Videos', link: '/videos'},
-        {page: 'Playlist', link: '/playlist'}
+        {page: 'Playlist', link: '/newplaylist'}
     ];
 
     const [anchorElNav, setAnchorElNav] = useState(null);

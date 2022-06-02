@@ -14,7 +14,7 @@ const Playlist = ({playlist, setPlaylist}) => {
         },
         {
             name: 'Type',
-            selector: row => row.type,
+            selector: row => row.type === 1 ? 'Photos' : 'Videos',
             width: '30%',
         },
         {
