@@ -12,7 +12,7 @@ const Column = ({column, photos, index}) => {
         top: '50%',
         left: '50%',
         transform: 'translate(-50%, -50%)',
-        width: '50%',
+        width: {md:'50%', xs:'100%'},
         bgcolor: 'background.paper',
         boxShadow: 24,
     };

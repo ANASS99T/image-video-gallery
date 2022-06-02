@@ -5,13 +5,16 @@ import Column from "../imageDnD/Column"
 import {DragDropContext} from "react-beautiful-dnd"
 import Typography from "@mui/material/Typography";
 
-const collectIds = (list) => {
+const collectIds = (list, prevent) => {
     let ids = [];
     list.forEach(item => {
-        ids.push(item.id);
+        if (!prevent.includes(item.id)) {
+            ids.push(item.id)
+        }
     });
     return ids;
 };
+
 
 const ChosePhotos = ({playlist, setPlaylist}) => {
 
@@ -20,14 +23,23 @@ const ChosePhotos = ({playlist, setPlaylist}) => {
         'column_1': {
             id: 'column_1',
             title: 'All photos',
-            photos_id: collectIds(photos)
+            photos_id: collectIds(photos,playlist.photos_id )
         },
         'column_2': {
             id: 'column_2',
             title: 'Selected photos',
-            photos_id: []
+            photos_id: playlist.photos_id || []
         }
     });
+
+    useEffect(() => {
+        setPlaylist(
+            {
+                ...playlist,
+                photos_id: columns['column_2'].photos_id
+            })
+    }, [columns.column_2.photos_id]);
+
 
     const columnOrder = ['column_1', 'column_2']; // order of columns
 
@@ -92,42 +104,43 @@ const ChosePhotos = ({playlist, setPlaylist}) => {
 
     }
 
-    return(
-    <>
-        <Box sx={{width: '100%', textAlign: 'start', mt:2}}>
-            <Typography variant="subtitle1" sx={{color:"gray"}}>
-                Drag photos to add them to your playlist (tap on photo to remove it)
-            </Typography>
-        </Box>
+    return (
+        <>
+            <Box sx={{width: '100%', textAlign: 'start', mt: 2}}>
+                <Typography variant="subtitle1" sx={{color: "gray"}}>
+                    Glisser les photos dans la colonne de droite pour les ajouter à la playlist (clicker sur une photo
+                    pour la visualiser)
+                </Typography>
+            </Box>
 
-        <Box sx={{
-            width: '100%',
-            height: '70vh',
-            my: 3,
-            display: 'flex',
-            alignItems: 'flex-start',
-            justifyContent: 'space-around'
-        }}>
+            <Box sx={{
+                width: '100%',
+                height: '70vh',
+                my: 3,
+                display: 'flex',
+                alignItems: 'flex-start',
+                justifyContent: 'space-around'
+            }}>
 
-            <DragDropContext
-                onDragEnd={onDragEnd}
-            >
-                <Box sx={{display: 'flex', width: '100%'}}>
-                    {
-                        columnOrder.map((column_id, index) => {
-                            const column = columns[column_id];
-                            const photos_list = column.photos_id.map(id => photos.find(photo => photo.id === id));
+                <DragDropContext
+                    onDragEnd={onDragEnd}
+                >
+                    <Box sx={{display: 'flex', width: '100%'}}>
+                        {
+                            columnOrder.map((column_id, index) => {
+                                const column = columns[column_id];
+                                const photos_list = column.photos_id.map(id => photos.find(photo => photo.id === id));
 
-                            return (
-                                <Column index={index} key={index} column={column} photos={photos_list}/>
-                            )
-                        })
-                    }
-                </Box>
-            </DragDropContext>
-        </Box>
-    </>
-)
+                                return (
+                                    <Column index={index} key={index} column={column} photos={photos_list}/>
+                                )
+                            })
+                        }
+                    </Box>
+                </DragDropContext>
+            </Box>
+        </>
+    )
 }
 
 

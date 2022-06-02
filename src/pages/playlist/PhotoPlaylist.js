@@ -7,18 +7,17 @@ import StepButton from '@mui/material/StepButton';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import ChosePhotos from "../../components/addPlaylistPhoto/ChosePhotos";
-import playlist from "../Playlist";
-import ConfigPlaylist from "./ConfigPlaylist";
+import ConfigPlaylist from '../../components/addPlaylistPhoto/ConfigPlaylist';
 import PreviewPlaylist from "../../components/addPlaylistPhoto/PreviewPlaylist";
 
-const steps = ['Select Photos', 'Config display', 'Preview'];
+const steps = ['Choix des images', 'Configuration', 'Aperçu'];
 
 
 const PhotoPlaylist = () => {
 
     const [activeStep, setActiveStep] = useState(0);
     const [completed, setCompleted] = useState({});
-    const [playlist, setPlaylist] = useState({});
+    const [playlist, setPlaylist] = useState({photos_id: [], name: '', settings: {rows:1, cols: 1}});
 
     const totalSteps = () => {
         return steps.length;
@@ -93,11 +92,11 @@ const PhotoPlaylist = () => {
                     ) : (
                         <React.Fragment>
                             {
-                                activeStep === 0 ? <ChosePhotos playlist={playlist}
-                                                                setPlaylist={setPlaylist}/> : activeStep === 1 ?
+                                activeStep == 0 ? <ChosePhotos playlist={playlist}
+                                                               setPlaylist={setPlaylist}/> : activeStep == 1 ?
                                     <ConfigPlaylist playlist={playlist}
-                                                    setPlaylist={setPlaylist}/> : activeStep === 2 ?
-                                        <PreviewPlaylist playlist={playlist} setPlaylist={setPlaylist}/> : null
+                                                    setPlaylist={setPlaylist}/> : activeStep == 2 ?
+                                        <PreviewPlaylist playlist={playlist}/> : null
                             }
                             <Box sx={{display: 'flex', flexDirection: 'row', pt: 2}}>
                                 <Button

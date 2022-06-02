@@ -28,6 +28,7 @@ function App() {
             image: '/images/beach_tropics_sea_sand_palm_trees_sunset_84729_1280x720.jpg',
             name: "First playlist",
             type: 1,
+
             photos: [
                 {
                     src: "images/autumn_forest_park_128379_1280x720.jpg",
