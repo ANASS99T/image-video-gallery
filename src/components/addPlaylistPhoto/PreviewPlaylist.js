@@ -3,7 +3,7 @@ import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import ImageList from "@mui/material/ImageList";
 import {photos} from '../../data/photos'
-import {Card, CardMedia, Grid} from "@mui/material";
+import {Card, CardContent, CardMedia, Grid} from "@mui/material";
 
 const PreviewPlaylist = ({playlist}) => {
 
@@ -16,8 +16,8 @@ const PreviewPlaylist = ({playlist}) => {
             return photos.find(photo => photo.id === id)
         })
         setImages(list)
-        const rows = playlist.settings.rows
-        const cols = playlist.settings.cols
+        const rows = playlist.settings.rows !== "" ? playlist.settings.rows : 1
+        const cols = playlist.settings.cols !== "" ? playlist.settings.cols : 1
         const matrix = Array(rows).fill(0).map(() => Array(cols).fill(0))
         const data = Array(Math.ceil(list.length / (rows * cols))).fill(matrix)
         setMatrix(matrix)
@@ -32,7 +32,7 @@ const PreviewPlaylist = ({playlist}) => {
                 k += 1
             }
         }
-        // console.log(matrix)
+        console.log(matrix)
     }, [])
 
 
@@ -47,8 +47,8 @@ const PreviewPlaylist = ({playlist}) => {
                 width: '100%',
                 minHeight: '70vh',
                 my: 3,
-                boxShadow: 4,
-                borderRadius: 2,
+                // boxShadow: 4,
+                // borderRadius: 2,
             }}>
                 {
                     playlist.photos_id.length == 0 ?
@@ -79,26 +79,35 @@ const PreviewPlaylist = ({playlist}) => {
                                     //         }}
                                     //     >
                                     //         {
-                                                row.map((col, index) => (
-                                                    <Grid item
-                                                          xs={12}
-                                                          md={matrix[0].length == 3 ? 6 : matrix[0].length == 2 ? 12 : 12}
-                                                          lg={matrix[0].length == 3 ? 4 : matrix[0].length == 2 ? 6 : 12}
-                                                          key={index + ind}
-                                                    >
-                                                        <Card sx={{m: 1, borderRadius: 0}}>
-                                                            <CardMedia
-                                                                component="img"
-                                                                // height="140"
-                                                                image={`/${matrix[ind][index].src}`}
-                                                                alt="green iguana"
-                                                            />
+                                    row.map((col, index) => (
+                                        <Grid item
+                                              xs={12}
+                                              md={matrix[0].length == 3 ? 6 : matrix[0].length == 2 ? 12 : 12}
+                                              lg={matrix[0].length == 3 ? 4 : matrix[0].length == 2 ? 6 : 12}
+                                              key={index + ind}
+                                        >
 
-                                                        </Card>
-                                                    </Grid>
-                                                ))
-                                            // }
-                                        // </Box>
+                                            <Card sx={{m: 1, borderRadius: 0, height:"100%", display:'flex', alignItems:'center', justifyContent:'center'}}>
+                                                {matrix[ind][index] ?
+                                                    <CardMedia
+                                                        component="img"
+                                                        height="100%"
+                                                        image={`/${matrix[ind][index].src}`}
+                                                        alt="green iguana"
+                                                    />
+                                                    :
+                                                    <CardContent>
+                                                        <Typography gutterBottom variant="h6" component="div" sx={{color: "lightgray"}}>
+                                                            Aucune photo
+                                                        </Typography>
+                                                    </CardContent>
+                                                }
+
+                                            </Card>
+                                        </Grid>
+                                    ))
+                                    // }
+                                    // </Box>
 
                                     // </Grid>
 

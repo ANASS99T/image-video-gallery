@@ -16,14 +16,14 @@ const collectIds = (list, prevent) => {
 };
 
 
-const ChosePhotos = ({playlist, setPlaylist}) => {
+const ChosePhotos = ({playlist, setPlaylist, completed}) => {
 
 
     const [columns, setColumns] = useState({
         'column_1': {
             id: 'column_1',
             title: 'All photos',
-            photos_id: collectIds(photos,playlist.photos_id )
+            photos_id: collectIds(photos, playlist.photos_id)
         },
         'column_2': {
             id: 'column_2',
@@ -108,8 +108,10 @@ const ChosePhotos = ({playlist, setPlaylist}) => {
         <>
             <Box sx={{width: '100%', textAlign: 'start', mt: 2}}>
                 <Typography variant="subtitle1" sx={{color: "gray"}}>
-                    Glisser les photos dans la colonne de droite pour les ajouter à la playlist (clicker sur une photo
-                    pour la visualiser)
+                    {completed[0] ? "Vous ne pouvez pas modifier la liste de photos si vous avez terminé cette ettape (clicker sur une photo pour la visualiser)"
+                        : 'Glisser les photos dans la colonne de droite pour les ajouter à la playlist (clicker sur une photo pour la visualiser)'
+                    }
+
                 </Typography>
             </Box>
 
@@ -124,6 +126,7 @@ const ChosePhotos = ({playlist, setPlaylist}) => {
 
                 <DragDropContext
                     onDragEnd={onDragEnd}
+
                 >
                     <Box sx={{display: 'flex', width: '100%'}}>
                         {
@@ -132,7 +135,8 @@ const ChosePhotos = ({playlist, setPlaylist}) => {
                                 const photos_list = column.photos_id.map(id => photos.find(photo => photo.id === id));
 
                                 return (
-                                    <Column index={index} key={index} column={column} photos={photos_list}/>
+                                    <Column index={index} key={index} completedSteps={completed} column={column}
+                                            photos={photos_list}/>
                                 )
                             })
                         }

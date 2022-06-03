@@ -9,15 +9,33 @@ import Typography from '@mui/material/Typography';
 import ChosePhotos from "../../components/addPlaylistPhoto/ChosePhotos";
 import ConfigPlaylist from '../../components/addPlaylistPhoto/ConfigPlaylist';
 import PreviewPlaylist from "../../components/addPlaylistPhoto/PreviewPlaylist";
+import Snackbar from '@mui/material/Snackbar';
+import {Alert} from "@mui/material";
+import {photos} from "../../data/photos";
+import { useNavigate } from 'react-router-dom';
 
 const steps = ['Choix des images', 'Configuration', 'Aperçu'];
 
 
-const PhotoPlaylist = () => {
+const PhotoPlaylist = ({playlists, setPlaylists}) => {
+
+    const navigate = useNavigate();
+
 
     const [activeStep, setActiveStep] = useState(0);
     const [completed, setCompleted] = useState({});
-    const [playlist, setPlaylist] = useState({photos_id: [], name: '', settings: {rows:1, cols: 1}});
+    const [playlist, setPlaylist] = useState({photos_id: [], name: '', settings: {rows: 1, cols: 1}});
+    const [openSnackbar, setOpenSnackbar] = useState(false);
+    const [message, setMessage] = useState('')
+
+
+    const handleCloseSnackbar = (event, reason) => {
+        if (reason === 'clickaway') {
+            return;
+        }
+
+        setOpenSnackbar(false);
+    };
 
     const totalSteps = () => {
         return steps.length;
@@ -54,6 +72,20 @@ const PhotoPlaylist = () => {
     };
 
     const handleComplete = () => {
+        if (activeStep === 0 && !playlist.photos_id.length) {
+            setMessage('Veuillez insérer au moins une photo dans la playlist')
+            setOpenSnackbar(true)
+            return;
+        }
+        if (activeStep === 1 && (playlist.name === "" || playlist.rows === "" || playlist.cols === "")) {
+            setMessage('Vous ne pouvez pas passer à l\'étape suivante sans remplir les champs obligatoires')
+            setOpenSnackbar(true)
+            return;
+        }
+        // if(activeStep === 2)
+        // {
+        //     return
+        // }
         const newCompleted = completed;
         newCompleted[activeStep] = true;
         setCompleted(newCompleted);
@@ -64,6 +96,25 @@ const PhotoPlaylist = () => {
         setActiveStep(0);
         setCompleted({});
     };
+
+    const savePlaylist = () => {
+        console.log(playlists)
+        const image = photos.find(photo => photo.id === playlist.photos_id[0])
+        const newPlaylist = {
+            id: new Date().getTime(),
+            photos_id: playlist.photos_id,
+            videos_id: [],
+            html_id: [],
+            name: playlist.name,
+            image: "/" + image.src,
+            settings: {
+                rows: playlist.rows,
+                cols: playlist.cols,
+            }
+        }
+        setPlaylists([...playlists, newPlaylist])
+        navigate('/newplaylist')
+    }
 
 
     return (
@@ -82,17 +133,18 @@ const PhotoPlaylist = () => {
                     {allStepsCompleted() ? (
                         <React.Fragment>
                             <Typography sx={{mt: 2, mb: 1}}>
-                                All steps completed - you&apos;re finished
+                                Tous les étapes sont complétées
                             </Typography>
                             <Box sx={{display: 'flex', flexDirection: 'row', pt: 2}}>
                                 <Box sx={{flex: '1 1 auto'}}/>
-                                <Button onClick={handleReset}>Reset</Button>
+                                <Button onClick={handleReset}>réinitialiser</Button>
+                                <Button onClick={savePlaylist}>enregistrer</Button>
                             </Box>
                         </React.Fragment>
                     ) : (
                         <React.Fragment>
                             {
-                                activeStep == 0 ? <ChosePhotos playlist={playlist}
+                                activeStep == 0 ? <ChosePhotos playlist={playlist} completed={completed}
                                                                setPlaylist={setPlaylist}/> : activeStep == 1 ?
                                     <ConfigPlaylist playlist={playlist}
                                                     setPlaylist={setPlaylist}/> : activeStep == 2 ?
@@ -105,22 +157,22 @@ const PhotoPlaylist = () => {
                                     onClick={handleBack}
                                     sx={{mr: 1}}
                                 >
-                                    Back
+                                    Retour
                                 </Button>
                                 <Box sx={{flex: '1 1 auto'}}/>
                                 <Button onClick={handleNext} sx={{mr: 1}}>
-                                    Next
+                                    Suivant
                                 </Button>
                                 {activeStep !== steps.length &&
                                     (completed[activeStep] ? (
                                         <Typography variant="caption" sx={{display: 'inline-block'}}>
-                                            Step {activeStep + 1} already completed
+                                            Etap {activeStep + 1} dejà complétée
                                         </Typography>
                                     ) : (
                                         <Button onClick={handleComplete}>
                                             {completedSteps() === totalSteps() - 1
-                                                ? 'Finish'
-                                                : 'Complete Step'}
+                                                ? 'Terminer'
+                                                : 'Terminer l\'étape'}
                                         </Button>
                                     ))}
                             </Box>
@@ -128,6 +180,12 @@ const PhotoPlaylist = () => {
                     )}
                 </div>
             </Box>
+
+            <Snackbar open={openSnackbar} autoHideDuration={3000} onClose={handleCloseSnackbar}>
+                <Alert onClose={handleCloseSnackbar} severity="warning" sx={{width: '100%'}}>
+                    {message}
+                </Alert>
+            </Snackbar>
 
         </Container>
     )

@@ -6,6 +6,36 @@ import {Grid, TextField} from "@mui/material";
 
 const ConfigPlaylist = ({playlist, setPlaylist}) => {
 
+    const handleColChange = (e) => {
+        let value = e.target.value;
+        if (value >= 3)
+            value = 3;
+        if (value < 0)
+            value = 1;
+
+        setPlaylist({
+            ...playlist,
+            settings: {
+                ...playlist.settings,
+                cols: value !== "" ? parseInt(value) : value
+            }
+        })
+    };
+    const handleRowChange = (e) => {
+        let value = e.target.value;
+        if (value >= 3)
+            value = 3;
+        if (value < 0)
+            value = 1;
+
+        setPlaylist({
+            ...playlist,
+            settings: {
+                ...playlist.settings,
+                rows: value !== "" ? parseInt(value) : value
+            }
+        })
+    };
 
     return (
         <>
@@ -37,31 +67,19 @@ const ConfigPlaylist = ({playlist, setPlaylist}) => {
                 <Grid container spacing={2} sx={{my: 1}}>
                     <Grid item xs={12} sm={6}>
                         <TextField id="num_rows" label="Nombre des lignes" type='number'
-                                   InputProps={{inputProps: {min: 1, max:3}}} variant="outlined"
+                                   InputProps={{inputProps: {min: 1, max: 3}}} variant="outlined"
                                    required
                                    value={playlist.settings.rows}
-                                   onChange={(e) => setPlaylist({
-                                       ...playlist,
-                                       settings: {
-                                           ...playlist.settings,
-                                           rows: e.target.value != '' ? parseInt(e.target.value) : 1
-                                       }
-                                   })}
+                                   onChange={handleRowChange}
                                    sx={{width: '100%'}}
                         />
                     </Grid>
                     <Grid item xs={12} sm={6}>
                         <TextField id="num_cols" label="Nombre des colonnes" type='number'
-                                   InputProps={{inputProps: {min: 1, max:3}}} variant="outlined"
+                                   InputProps={{inputProps: {min: 1, max: 3}}} variant="outlined"
                                    required
                                    value={playlist.settings.cols}
-                                   onChange={(e) => setPlaylist({
-                                       ...playlist,
-                                       settings: {
-                                           ...playlist.settings,
-                                           cols: e.target.value != '' ? parseInt(e.target.value) : 1
-                                       }
-                                   })}
+                                   onChange={handleColChange}
                                    sx={{width: '100%'}}
                         />
                     </Grid>

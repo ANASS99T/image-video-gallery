@@ -27,7 +27,7 @@ const modalStyle = {
 
 };
 
-const NewPlaylist = ({playlist, setPlaylist}) => {
+const NewPlaylist = ({playlists}) => {
 
     const [openNewModal, setOpenNewModal] = React.useState(false);
     const handleOpenNewModal = () => setOpenNewModal(true);
@@ -51,7 +51,7 @@ const NewPlaylist = ({playlist, setPlaylist}) => {
                 </Card>
 
                 {
-                    playlist.map((item, index) => (
+                    playlists.map((item, index) => (
                         <PlaylistCard info={item} key={index}/>
                     ))
                 }

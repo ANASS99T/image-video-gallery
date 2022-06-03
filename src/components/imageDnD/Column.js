@@ -5,7 +5,7 @@ import {Card, CardMedia} from "@mui/material";
 import {Droppable, Draggable} from 'react-beautiful-dnd'
 import Modal from "@mui/material/Modal";
 
-const Column = ({column, photos, index}) => {
+const Column = ({column, photos, completedSteps}) => {
 
     const style = {
         position: 'absolute',
@@ -55,7 +55,7 @@ const Column = ({column, photos, index}) => {
                                  }}>
                                 {
                                     photos.map((photo, index) => (
-                                        <Draggable key={photo.id} draggableId={photo.id} index={index}>
+                                        <Draggable key={photo.id} draggableId={photo.id} index={index} isDragDisabled={completedSteps[0]}>
                                             {
                                                 (provided, snapshot) => (
                                                     <Box

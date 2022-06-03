@@ -14,6 +14,7 @@ import VideoPlaylist from "./pages/playlist/VideoPlaylist";
 import CustomPlaylist from "./pages/playlist/CustomPlaylist";
 import PlayPlaylist from "./pages/playlist/PlayPlaylist";
 import {CssBaseline} from "@mui/material";
+import Test from "./pages/Test";
 
 
 function ConfigPlaylist() {
@@ -59,7 +60,8 @@ function App() {
         }
     ]
 
-    const [playlist, setPlaylist] = useState(initData)
+    const [playlist, setPlaylist] = useState({})
+    const [playlists, setPlaylists] = useState([])
 
     return (
         <div className='App'>
@@ -69,13 +71,14 @@ function App() {
                 <Route path='/' element={<Photos/>}/>
                 <Route path='/videos' element={<Videos/>}/>
                 <Route path='/playlist' element={<Playlist playlist={playlist} setPlaylist={setPlaylist}/>}/>
-                <Route path='/newplaylist' element={<NewPlaylist playlist={playlist} setPlaylist={setPlaylist}/>}/>
+                <Route path='/newplaylist' element={<NewPlaylist playlists={playlists} setPlaylists={setPlaylists} playlist={playlist} setPlaylist={setPlaylist}/>}/>
                 <Route path='/playlist/:id' element={<EditPlaylist playlist={playlist} setPlaylist={setPlaylist}/>}/>
 
 
-                <Route path='/addPlaylist/photo' element={<PhotoPlaylist/>}/>
+                <Route path='/addPlaylist/photo' element={<PhotoPlaylist playlists={playlists} setPlaylists={setPlaylists}/>}/>
                 <Route path='/addPlaylist/video' element={<VideoPlaylist/>}/>
                 <Route path='/addPlaylist/custom' element={<CustomPlaylist/>}/>
+                <Route path='/test' element={<Test/>}/>
 
                 <Route path='/playlist/play/:id'
                        element={<PlayPlaylist/>}/>
