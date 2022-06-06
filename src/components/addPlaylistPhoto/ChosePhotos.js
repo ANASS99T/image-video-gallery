@@ -128,7 +128,7 @@ const ChosePhotos = ({playlist, setPlaylist, completed}) => {
                     onDragEnd={onDragEnd}
 
                 >
-                    <Box sx={{display: 'flex', width: '100%'}}>
+                    <Box sx={{display: 'flex', width: '100%', justifyContent: 'center'}}>
                         {
                             columnOrder.map((column_id, index) => {
                                 const column = columns[column_id];

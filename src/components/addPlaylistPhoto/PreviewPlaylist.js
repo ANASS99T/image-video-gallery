@@ -1,15 +1,20 @@
 import React, {useState, useEffect} from 'react'
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
-import ImageList from "@mui/material/ImageList";
 import {photos} from '../../data/photos'
-import {Card, CardContent, CardMedia, Grid} from "@mui/material";
+import {Card, CardContent, CardMedia, Fab, Grid} from "@mui/material";
+import PlayArrowIcon from '@mui/icons-material/PlayArrow';
+import Play from "./Play";
+import Modal from "@mui/material/Modal";
 
 const PreviewPlaylist = ({playlist}) => {
 
     const [images, setImages] = useState([])
     const [matrix, setMatrix] = useState([])
     const [data, setData] = useState([])
+    const [openPreview, setOpenPreview] = useState(false)
+
+
     useEffect(() => {
         //get photos from that that match the playlist photos_id
         const list = playlist.photos_id.map(id => {
@@ -32,8 +37,32 @@ const PreviewPlaylist = ({playlist}) => {
                 k += 1
             }
         }
-        console.log(matrix)
+        // console.log(matrix)
     }, [])
+
+    const handleOpenPreview = () => {
+        setOpenPreview(true)
+    }
+
+    const handleClosePreview = (event, reason) => {
+        if (reason === 'clickaway') {
+            return;
+        }
+        console.log('clicked')
+        setOpenPreview(false);
+    }
+
+
+    const stylePreview = {
+        position: 'absolute',
+        top: 0,
+        left: 0,
+        width: "100%",
+        height: "100%",
+        bgcolor: 'background.paper',
+        border: "none",
+        p: 0,
+    };
 
 
     return (
@@ -47,9 +76,15 @@ const PreviewPlaylist = ({playlist}) => {
                 width: '100%',
                 minHeight: '70vh',
                 my: 3,
+                position: 'relative'
                 // boxShadow: 4,
                 // borderRadius: 2,
             }}>
+                <Fab variant="extended" color="info" size="medium"
+                     sx={{position: "absolute", bottom: "20px", right: "20px"}} onClick={handleOpenPreview}>
+                    <PlayArrowIcon sx={{mr: 1}}/>
+                    Play
+                </Fab>
                 {
                     playlist.photos_id.length == 0 ?
                         <Box sx={{
@@ -87,7 +122,14 @@ const PreviewPlaylist = ({playlist}) => {
                                               key={index + ind}
                                         >
 
-                                            <Card sx={{m: 1, borderRadius: 0, height:"100%", display:'flex', alignItems:'center', justifyContent:'center'}}>
+                                            <Card sx={{
+                                                m: 1,
+                                                borderRadius: 0,
+                                                height: "100%",
+                                                display: 'flex',
+                                                alignItems: 'center',
+                                                justifyContent: 'center'
+                                            }}>
                                                 {matrix[ind][index] ?
                                                     <CardMedia
                                                         component="img"
@@ -97,7 +139,8 @@ const PreviewPlaylist = ({playlist}) => {
                                                     />
                                                     :
                                                     <CardContent>
-                                                        <Typography gutterBottom variant="h6" component="div" sx={{color: "lightgray"}}>
+                                                        <Typography gutterBottom variant="h6" component="div"
+                                                                    sx={{color: "lightgray"}}>
                                                             Aucune photo
                                                         </Typography>
                                                     </CardContent>
@@ -118,6 +161,20 @@ const PreviewPlaylist = ({playlist}) => {
             </Box>
 
 
+            <Modal
+                open={openPreview}
+                onClose={handleClosePreview}
+                aria-labelledby="modal-modal-title"
+                aria-describedby="modal-modal-description"
+            >
+                <Box sx={stylePreview}>
+                    {matrix[0] ?
+                        <Play nRows={matrix.length} nCols={matrix[0].length || 1} images={images}
+                              setOpenPreview={setOpenPreview}/>
+                        : null
+                    }
+                </Box>
+            </Modal>
         </>
     )
 }

@@ -15,6 +15,7 @@ import CustomPlaylist from "./pages/playlist/CustomPlaylist";
 import PlayPlaylist from "./pages/playlist/PlayPlaylist";
 import {CssBaseline} from "@mui/material";
 import Test from "./pages/Test";
+import TestPlay from "./pages/TestPlay";
 
 
 function ConfigPlaylist() {
@@ -79,6 +80,7 @@ function App() {
                 <Route path='/addPlaylist/video' element={<VideoPlaylist/>}/>
                 <Route path='/addPlaylist/custom' element={<CustomPlaylist/>}/>
                 <Route path='/test' element={<Test/>}/>
+                <Route path='/test/play' element={<TestPlay/>}/>
 
                 <Route path='/playlist/play/:id'
                        element={<PlayPlaylist/>}/>
