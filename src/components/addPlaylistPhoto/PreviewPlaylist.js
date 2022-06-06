@@ -37,7 +37,7 @@ const PreviewPlaylist = ({playlist}) => {
                 k += 1
             }
         }
-        // console.log(matrix)
+        console.log(playlist)
     }, [])
 
     const handleOpenPreview = () => {
@@ -48,7 +48,6 @@ const PreviewPlaylist = ({playlist}) => {
         if (reason === 'clickaway') {
             return;
         }
-        console.log('clicked')
         setOpenPreview(false);
     }
 
